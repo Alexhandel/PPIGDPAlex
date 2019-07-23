@@ -62,8 +62,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\enemyController.cs" />
-    <Compile Include="Assets\generalController.cs" />
+    <Compile Include="Assets\dontDestroy.cs" />
+    <Compile Include="Assets\globalVariables.cs" />
+    <Compile Include="Assets\pathSelectController.cs" />
+    <Compile Include="Assets\Scripts\enemyController.cs" />
+    <Compile Include="Assets\Scripts\generalController.cs" />
+    <Compile Include="Assets\Scripts\menuscript.cs" />
     <Compile Include="Assets\Scripts\playerController.cs" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface-Mobile.shader" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />

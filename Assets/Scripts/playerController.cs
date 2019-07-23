@@ -6,16 +6,21 @@ using TMPro;
 
 public class playerController : MonoBehaviour
 {
-    public float health;
+    public float maxHealth;
+    public float currentHealth;
     public float attack;
     public float defense;
+    public bool alive=true;
+    private float damage = 0;
+    private float healthNumber;
+    public float counter, timetoAttack, minTime, maxTime;
     public TextMeshProUGUI text;
     public GameObject currentEnemy;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        currentHealth = maxHealth;
     }
 
     private void FixedUpdate()
@@ -30,18 +35,55 @@ public class playerController : MonoBehaviour
     void Update()
     {
         updateText(text);
-        if (currentEnemy!=null)
+        if (currentEnemy!=null&&alive==true)
         {
-            if (Input.anyKeyDown)
+            if (currentHealth < 0.500001)
             {
-                currentEnemy.GetComponent<enemyController>().health -= (attack - currentEnemy.GetComponent<enemyController>().defense);
+                alive = false;
+                gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Sprites/rip");
+                transform.localScale = new Vector3(2.24f, 2.24f, 0);
+            }
+            else if (counter >= timetoAttack)
+            {
+                Ataca();
+                counter = 0;
+                timetoAttack = Random.Range(minTime, maxTime);
+            }
+            else
+            {
+                counter += Time.deltaTime;
             }
         }
         
     }
-
+    public void Ataca()
+    {
+        if ((attack - currentEnemy.GetComponent<enemyController>().defense) <= 1)
+        {
+            damage = 1;
+        }
+        else
+        {
+            damage = attack - currentEnemy.GetComponent<enemyController>().defense;
+        }
+        currentEnemy.GetComponent<enemyController>().health -= damage;
+        if (currentEnemy.GetComponent<enemyController>().health>=1)
+        {
+            currentEnemy.GetComponent<Animation>().Play();
+        }
+        
+    }
     void updateText(TextMeshProUGUI text)
     {
-        text.SetText("Player \nHealth: " + health + "\nAttack: " + attack + "\nDefense: " + defense);
+        
+        if (currentHealth <= 0)
+        {
+            healthNumber = 0;
+        }
+        else
+        {
+            healthNumber = currentHealth;
+        }
+        text.SetText("Player \nHealth: " + Mathf.Round(healthNumber) + "/" + Mathf.Round(maxHealth) + "\nAttack: " + Mathf.Round(attack) + "\nDefense: " + Mathf.Round(defense));
     }
 }
